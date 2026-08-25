@@ -1045,25 +1045,62 @@
         Object.keys(STAY_GUIDE_I18N).forEach(lang => Object.assign(FULL_I18N[lang] || (FULL_I18N[lang] = {}), STAY_GUIDE_I18N[lang]));
 
         const JOURNEY_CONTENT = {
-          gate:["先前往第一停車場／飯店方向","完成入園繳費後，請保留綠色票券或繳費憑證。依園區指示前往第一停車場；若有長輩或大型行李，可先詢問是否適合先至雲杉樓附近短暫卸行李。"],
-          parking:["接著前往雲杉樓 1F 辦理 Check-in","停好車後，帶著訂房資料、證件與綠色票券前往雲杉樓 1 樓。第一停車場若有 30 分鐘相關管制，請以現場標示為準。"],
-          lobby:["先完成入住登記並領取房卡","Check-in 時出示證件與綠色票券／停車憑證。領到房卡後，再依房卡棟別安排搬運行李與前往住宿棟。"],
-          key:["依房卡棟別前往住宿區","漢光樓有電梯且動線較平坦；大學樓步行較遠且無電梯；鳳凰樓有較長階梯，重行李建議先卸。"],
-          university:["大學樓：行李輕便再步行前往","大學樓無電梯、步行距離較長。若有大型行李、推車或長輩同行，請先向櫃台確認最省力的搬運方式。"],
-          phoenix:["鳳凰樓：先處理重行李","鳳凰樓入口有較長階梯且無電梯。完成 Check-in 後，建議先依櫃台指引到較近位置卸重行李，再停車。"],
-          hanguang:["漢光樓：走平坦動線前往","漢光樓設有電梯，較適合長輩、推車、輪椅或大型行李旅客。請依現場指標走平坦／無障礙動線。"],
-          unsure:["先到雲杉樓 1F 服務中心最安全","如果不確定住宿棟、停車或行李動線，先到雲杉樓 1F 完成入住；也可以直接開啟 AI 客服詢問。"]
+          zh: {
+            gate:["先前往第一停車場／飯店方向","完成入園繳費後，請保留綠色票券或繳費憑證。依園區指示前往第一停車場；若有長輩或大型行李，可先詢問是否適合先至雲杉樓附近短暫卸行李。"],
+            parking:["接著前往雲杉樓 1F 辦理 Check-in","停好車後，帶著訂房資料、證件與綠色票券前往雲杉樓 1 樓。第一停車場若有 30 分鐘相關管制，請以現場標示為準。"],
+            lobby:["先完成入住登記並領取房卡","Check-in 時出示證件與綠色票券／停車憑證。領到房卡後，再依房卡棟別安排搬運行李與前往住宿棟。"],
+            key:["依房卡棟別前往住宿區","漢光樓有電梯且動線較平坦；大學樓步行較遠且無電梯；鳳凰樓有較長階梯，重行李建議先卸。"],
+            university:["大學樓：行李輕便再步行前往","大學樓無電梯、步行距離較長。若有大型行李、推車或長輩同行，請先向櫃台確認最省力的搬運方式。"],
+            phoenix:["鳳凰樓：先處理重行李","鳳凰樓入口有較長階梯且無電梯。完成 Check-in 後，建議先依櫃台指引到較近位置卸重行李，再停車。"],
+            hanguang:["漢光樓：走平坦動線前往","漢光樓設有電梯，較適合長輩、推車、輪椅或大型行李旅客。請依現場指標走平坦／無障礙動線。"],
+            unsure:["先到雲杉樓 1F 服務中心最安全","如果不確定住宿棟、停車或行李動線，先到雲杉樓 1F 完成入住；也可以直接開啟 AI 客服詢問。"]
+          },
+          en: {
+            gate:["Head to Parking Lot 1 / the hotel","After paying the park entry fee, keep your green ticket or payment receipt. Follow the park signs to Parking Lot 1. If you are traveling with seniors or large luggage, ask whether you may briefly unload near the Spruce Building first."],
+            parking:["Go to Spruce Building 1F for check-in","After parking, bring your booking details, ID, and green ticket to the 1F lobby of the Spruce Building. If Parking Lot 1 has a 30-minute restriction, follow the on-site signs."],
+            lobby:["Complete check-in and collect your room key","Present your ID and green ticket / parking receipt at check-in. After receiving your room key, follow your assigned building and arrange luggage transfer accordingly."],
+            key:["Proceed to your assigned accommodation building","Han-Kuang Building has an elevator and a flatter route. University Building is farther away and has no elevator. Phoenix Building has longer stairs, so unload heavy luggage first."],
+            university:["University Building: travel light before walking over","University Building has no elevator and is farther on foot. If you have large luggage, a stroller, or seniors in your group, ask the front desk for the easiest luggage route."],
+            phoenix:["Phoenix Building: unload heavy luggage first","Phoenix Building has a longer staircase and no elevator. After check-in, follow front desk guidance to unload heavy luggage at the nearest suitable point before parking."],
+            hanguang:["Han-Kuang Building: use the flatter accessible route","Han-Kuang Building has an elevator and is more suitable for seniors, strollers, wheelchairs, or large luggage. Follow the on-site signs for the flatter / accessible route."],
+            unsure:["Go to the Spruce Building 1F Service Center first","If you are unsure about your building, parking, or luggage route, go to the Spruce Building 1F to complete check-in first. You can also ask the AI concierge."]
+          },
+          ja: {
+            gate:["まず第1駐車場／ホテル方面へ","入園料金を支払った後、緑色のチケットまたは支払い証明を保管してください。園内表示に従って第1駐車場へお進みください。高齢者や大型荷物がある場合は、先に雲杉楼付近で短時間荷物を降ろせるかスタッフにご確認ください。"],
+            parking:["次に雲杉楼1Fでチェックイン","駐車後、予約情報・身分証明書・緑色チケットを持って雲杉楼1階へお越しください。第1駐車場に30分の利用制限がある場合は、現地表示に従ってください。"],
+            lobby:["チェックインを済ませ、ルームキーを受け取る","チェックイン時に身分証明書と緑色チケット／駐車証明を提示してください。ルームキー受領後、宿泊棟に合わせて荷物の移動と移動経路をご案内します。"],
+            key:["ルームキー記載の宿泊棟へ","漢光楼はエレベーターがあり比較的平坦です。大学楼は徒歩距離が長くエレベーターがありません。鳳凰楼は長い階段があるため、重い荷物は先に降ろすことをおすすめします。"],
+            university:["大学楼：身軽な状態で徒歩移動を","大学楼にはエレベーターがなく、徒歩距離も長めです。大型荷物、ベビーカー、高齢者がいる場合は、フロントで最も負担の少ない荷物運搬方法をご確認ください。"],
+            phoenix:["鳳凰楼：重い荷物を先に降ろす","鳳凰楼の入口には長い階段があり、エレベーターはありません。チェックイン後、フロントの案内に従って近い場所で重い荷物を降ろしてから駐車してください。"],
+            hanguang:["漢光楼：平坦なルートで移動","漢光楼にはエレベーターがあり、高齢者、ベビーカー、車椅子、大型荷物のある方に適しています。現地表示に従って平坦／バリアフリールートをご利用ください。"],
+            unsure:["まず雲杉楼1Fサービスセンターへ","宿泊棟、駐車、荷物の動線が分からない場合は、まず雲杉楼1Fでチェックインしてください。AIコンシェルジュにも質問できます。"]
+          },
+          ko: {
+            gate:["먼저 제1주차장 / 호텔 방향으로 이동하세요","입장 요금을 낸 뒤 녹색 티켓 또는 결제 영수증을 보관하세요. 안내 표지에 따라 제1주차장으로 이동하세요. 어르신이나 큰 짐이 있다면 먼저 운삼루(雲杉樓) 근처에서 잠시 짐을 내릴 수 있는지 직원에게 확인하세요."],
+            parking:["운삼루 1층에서 체크인하세요","주차 후 예약 정보, 신분증, 녹색 티켓을 가지고 운삼루 1층으로 이동하세요. 제1주차장에 30분 관련 제한이 있는 경우 현장 안내 표지를 따라주세요."],
+            lobby:["체크인을 완료하고 객실 키를 받으세요","체크인 시 신분증과 녹색 티켓 / 주차 영수증을 제시하세요. 객실 키를 받은 뒤 숙박동에 맞춰 짐 이동과 이동 경로를 안내받으세요."],
+            key:["객실 키에 표시된 숙박동으로 이동하세요","한광동은 엘리베이터가 있고 동선이 비교적 평탄합니다. 대학동은 도보 거리가 길고 엘리베이터가 없습니다. 봉황동은 긴 계단이 있으므로 무거운 짐은 먼저 내려놓는 것이 좋습니다."],
+            university:["대학동: 가벼운 짐으로 걸어서 이동하세요","대학동은 엘리베이터가 없고 도보 거리가 깁니다. 큰 짐, 유모차 또는 어르신이 함께라면 프런트에 가장 편한 짐 운반 방법을 문의하세요."],
+            phoenix:["봉황동: 무거운 짐을 먼저 내리세요","봉황동 입구에는 긴 계단이 있고 엘리베이터가 없습니다. 체크인 후 프런트 안내에 따라 가까운 곳에서 무거운 짐을 먼저 내린 뒤 주차하세요."],
+            hanguang:["한광동: 평탄한 동선으로 이동하세요","한광동에는 엘리베이터가 있어 어르신, 유모차, 휠체어 또는 큰 짐이 있는 투숙객에게 더 편리합니다. 현장 표지에 따라 평탄한 / 무장애 동선을 이용하세요."],
+            unsure:["먼저 운삼루 1층 서비스센터로 가세요","숙박동, 주차 또는 짐 이동 경로가 확실하지 않다면 먼저 운삼루 1층에서 체크인을 완료하세요. AI 컨시어지에 바로 문의하셔도 됩니다."]
+          }
         };
+
+        function applyJourneyStep(step) {
+          const langData = JOURNEY_CONTENT[CURRENT_LANG] || JOURNEY_CONTENT.zh;
+          const data = langData[step] || langData.unsure;
+          if (!data) return;
+          document.getElementById('journeyTitle').textContent = data[0];
+          document.getElementById('journeyDesc').textContent = data[1];
+        }
 
         function setupJourneyGuide(){
           document.querySelectorAll('.journey-btn').forEach(btn=>{
             btn.addEventListener('click',()=>{
               document.querySelectorAll('.journey-btn').forEach(b=>b.classList.remove('bg-forest','text-white'));
               btn.classList.add('bg-forest','text-white');
-              const data=JOURNEY_CONTENT[btn.dataset.step];
-              if(!data) return;
-              document.getElementById('journeyTitle').textContent=data[0];
-              document.getElementById('journeyDesc').textContent=data[1];
+              applyJourneyStep(btn.dataset.step);
             });
           });
         }
@@ -1142,6 +1179,9 @@
             if (!ORIGINAL_TEXT_NODES.length) captureOriginalTextNodes();
             translateFullPage(lang);
             updateLanguageButtons(lang);
+            const activeJourney = document.querySelector('.journey-btn.bg-forest[data-step]');
+            if (activeJourney) applyJourneyStep(activeJourney.dataset.step);
+            else applyJourneyStep('unsure');
             try { localStorage.setItem('xitou_lang', lang); } catch (e) {}
             setTimeout(refreshDynamicLanguage, 0);
         }
