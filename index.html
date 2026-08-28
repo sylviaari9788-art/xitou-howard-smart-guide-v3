@@ -62,15 +62,15 @@
                 height: 102px;
                 pointer-events: none;
                 user-select: none;
-                transform: translate(-9px, -8px);
+                transform: translate3d(-9999px, -9999px, 0);
                 transform-origin: 9px 8px;
-                transition: opacity 120ms ease, scale 120ms ease;
-                will-change: left, top;
+                transition: opacity 80ms ease;
+                will-change: transform, opacity;
+                contain: layout style paint;
                 opacity: 0;
             }
 
             #character-cursor.is-visible { opacity: 1; }
-            #character-cursor.is-active { scale: 0.92; }
         }
 
         @media (hover: none), (pointer: coarse) {
@@ -714,9 +714,9 @@
 </div>
 <!-- Pre-defined quick chips -->
 <div class="p-2 bg-white border-t border-sage/10 flex space-x-2 overflow-x-auto hide-scrollbar text-[11px]">
-<button class="bg-cream hover:bg-gold/20 text-forest px-2.5 py-1 rounded-full whitespace-nowrap border border-sage/30" onclick="sendQuickMsg(' Check-in 在哪裡？')">📍 Check-in 在哪裡？</button>
-<button class="bg-cream hover:bg-gold/20 text-forest px-2.5 py-1 rounded-full whitespace-nowrap border border-sage/30" onclick="sendQuickMsg('哪一棟有電梯？')">🛗 哪一棟有電梯？</button>
-<button class="bg-cream hover:bg-gold/20 text-forest px-2.5 py-1 rounded-full whitespace-nowrap border border-sage/30" onclick="sendQuickMsg('停車費多少錢？')">🅿️ 停車費多少錢？</button>
+<button class="bg-cream hover:bg-gold/20 text-forest px-2.5 py-1 rounded-full whitespace-nowrap border border-sage/30" onclick="sendQuickMsg('checkin')">📍 Check-in 在哪裡？</button>
+<button class="bg-cream hover:bg-gold/20 text-forest px-2.5 py-1 rounded-full whitespace-nowrap border border-sage/30" onclick="sendQuickMsg('elevator')">🛗 哪一棟有電梯？</button>
+<button class="bg-cream hover:bg-gold/20 text-forest px-2.5 py-1 rounded-full whitespace-nowrap border border-sage/30" onclick="sendQuickMsg('parking')">🅿️ 停車費多少錢？</button>
 </div>
 <!-- Input Bar -->
 <div class="p-3 bg-white border-t flex space-x-2">
@@ -793,8 +793,10 @@
             }
         };
 
+        const MAP_GUIDE_I18N = {"en":{"1":{"step":"01 · ARRIVAL & PARKING","title":"Enter through the Scenic Gate,<br>then follow signs to the parking area.","desc":"After entering through the Scenic Gate, follow the park route to Spruce Building for check-in. Hotel guests should show their parking payment receipt at check-in to receive the parking credit.","tip":"📍 If you are traveling with seniors or large luggage, you may briefly unload near Spruce Building 1F before parking."},"2":{"step":"02 · CHECK-IN","title":"No matter which building you stay in,<br>check in at Spruce Building first.","desc":"Check-in is at the hotel reception lobby on Spruce Building 1F. After check-in, follow your room key and on-site signs to University, Phoenix, Red, or Han-Kuang Building.","tip":"🔑 The park opens from 07:00. Complete check-in first, collect your room key and parking-credit information, then continue to your accommodation building."},"3":{"step":"03 · ELEVATOR & LUGGAGE","title":"Traveling with seniors or large luggage?<br>Check the building and route first.","desc":"Elevator access and walking conditions differ by building. If you have large luggage, a stroller, or seniors in your group, ask the front desk for the most suitable route.","tip":"🧳 You can unload near the service center first and ask the front desk about luggage assistance or shuttle information."},"4":{"step":"04 · TRAVEL QA","title":"Still not sure where to go?<br>Ask the AI concierge.","desc":"Ask about check-in, parking credits, accommodation buildings, walking time, elevators, luggage, and other common travel questions.","tip":"🤖 Select “I still have a check-in question” to open the AI concierge."}},"ja":{"1":{"step":"01 · 入園・駐車","title":"景観門から入園し、<br>案内に従って駐車エリアへ。","desc":"景観門から入園後、園内ルートに沿って雲杉楼へ進みチェックインしてください。宿泊者はチェックイン時に駐車料金の領収書を提示し、駐車割引の手続きを行ってください。","tip":"📍 高齢者や大型荷物がある場合は、先に雲杉楼1F付近で短時間荷物を降ろしてから駐車できます。"},"2":{"step":"02 · チェックイン","title":"宿泊棟に関係なく、<br>まず雲杉楼でチェックイン。","desc":"チェックインは雲杉楼1Fのホテルフロントです。手続き後、ルームキーと現地表示に従って大学楼、鳳凰楼、紅楼、漢光楼へお進みください。","tip":"🔑 園区は07:00から入園できます。先にチェックインしてルームキーと駐車割引情報を受け取り、その後宿泊棟へ移動してください。"},"3":{"step":"03 · エレベーター・荷物","title":"高齢者や大型荷物がある場合は、<br>先に宿泊棟と動線を確認。","desc":"宿泊棟によってエレベーターや徒歩条件が異なります。大型荷物、ベビーカー、高齢者がいる場合は、フロントで最適な移動方法をご確認ください。","tip":"🧳 サービスセンター付近で先に荷物を降ろし、荷物サポートや送迎情報をフロントに確認できます。"},"4":{"step":"04 · 旅宿Q&A","title":"まだ行き方が分からない？<br>AIコンシェルジュに質問。","desc":"チェックイン場所、駐車割引、宿泊棟、徒歩時間、エレベーター、荷物などのよくある質問を確認できます。","tip":"🤖 「まだチェックインについて質問がある」を選ぶとAIコンシェルジュが開きます。"}},"ko":{"1":{"step":"01 · 입장 및 주차","title":"경관문으로 입장한 뒤,<br>안내에 따라 주차 구역으로 이동하세요.","desc":"경관문으로 입장한 뒤 공원 동선을 따라 운삼루로 이동해 체크인하세요. 숙박객은 체크인 시 주차 결제 영수증을 제시해 주차 할인을 받으세요.","tip":"📍 어르신이나 큰 짐이 있다면 먼저 운삼루 1층 근처에서 잠시 짐을 내린 뒤 주차할 수 있습니다."},"2":{"step":"02 · 체크인","title":"어느 숙박동이든,<br>먼저 운삼루에서 체크인하세요.","desc":"체크인은 운삼루 1층 호텔 프런트에서 진행합니다. 체크인 후 객실 키와 현장 표지에 따라 대학동, 봉황동, 홍루 또는 한광동으로 이동하세요.","tip":"🔑 공원은 07:00부터 입장할 수 있습니다. 먼저 체크인하고 객실 키와 주차 할인 정보를 받은 뒤 숙박동으로 이동하세요."},"3":{"step":"03 · 엘리베이터 및 짐","title":"어르신이나 큰 짐이 있다면,<br>숙박동과 이동 동선을 먼저 확인하세요.","desc":"숙박동마다 엘리베이터와 도보 조건이 다릅니다. 큰 짐, 유모차 또는 어르신이 함께라면 프런트에서 가장 적합한 이동 방법을 확인하세요.","tip":"🧳 서비스센터 근처에서 먼저 짐을 내리고 프런트에 짐 지원 또는 셔틀 정보를 문의할 수 있습니다."},"4":{"step":"04 · 여행 Q&A","title":"아직 이동 방법이 확실하지 않나요?<br>AI 컨시어지에 문의하세요.","desc":"체크인 위치, 주차 할인, 숙박동, 도보 시간, 엘리베이터, 짐 등 자주 묻는 질문을 빠르게 확인할 수 있습니다.","tip":"🤖 ‘체크인 관련 질문이 더 있어요’를 선택하면 AI 컨시어지가 열립니다."}}};
+
         function showMapGuide(step) {
-            const data = mapGuideData[step];
+            const data = (CURRENT_LANG !== 'zh' && MAP_GUIDE_I18N[CURRENT_LANG] && MAP_GUIDE_I18N[CURRENT_LANG][step]) ? MAP_GUIDE_I18N[CURRENT_LANG][step] : mapGuideData[step];
             if (!data) return;
             document.getElementById('mapGuideStep').textContent = data.step;
             document.getElementById('mapGuideTitle').innerHTML = data.title;
@@ -831,18 +833,52 @@
 
         // 3. 模擬 AI 智慧客服對話回應機制（已修正電梯邏輯）
         function sendQuickMsg(text) {
-            appendMessage('user', text);
-            setTimeout(() => {
-                let reply = "您好！關於此問題，建議您可以參考頁面上的最新指南，或直接至服務櫃檯由客服人員為您協助。";
-                if (text.includes("Check-in")) {
-                    reply = "辦理入住登記的地點位於【溪頭福華雲杉樓1樓大廳】。辦理時間為平日下午 15:00 以後，週六、週日及國定假期下午 16:00 以後。";
-                } else if (text.includes("電梯")) {
-                    reply = "目前只有【漢光樓】配備電梯喔！大學樓、鳳凰樓與紅樓皆無電梯，同行若有長輩或重大型行李建議優先預約漢光樓，或至櫃檯申請行李運送服務。";
-                } else if (text.includes("停車")) {
-                    reply = "住房旅客憑入園停車繳費單據，可於辦理 Check-in 時向櫃檯申請 180 元停車折抵優惠。";
+            const lang = CURRENT_LANG || 'zh';
+            const AI_CHAT = {
+                zh: {
+                    q:{checkin:'📍 Check-in 在哪裡？',elevator:'🛗 哪一棟有電梯？',parking:'🅿️ 停車費多少錢？'},
+                    generic:'您好！關於此問題，建議您參考頁面上的最新指南，或直接至服務櫃檯由客服人員協助。',
+                    checkin:'辦理入住登記的地點位於【溪頭福華雲杉樓1樓大廳】。辦理時間為平日下午 15:00 以後，週六、週日及國定假期下午 16:00 以後。',
+                    elevator:'目前只有【漢光樓】配備電梯。大學樓、鳳凰樓與紅樓皆無電梯；若同行有長輩或大型行李，建議優先預約漢光樓，或向櫃檯詢問行李協助。',
+                    parking:'住房旅客憑入園停車繳費單據，可於辦理 Check-in 時向櫃檯申請 NT$180 停車折抵。'
+                },
+                en: {
+                    q:{checkin:'📍 Where is check-in?',elevator:'🛗 Which building has an elevator?',parking:'🅿️ How much is parking?'},
+                    generic:'For this question, please refer to the latest guide on this page or ask the service desk for assistance.',
+                    checkin:'Check-in is at the 1F lobby of Howard Resort Xitou’s Spruce Building. Check-in is after 15:00 on weekdays and after 16:00 on Saturdays, Sundays, and public holidays.',
+                    elevator:'Currently, only Han-Kuang Building has an elevator. University, Phoenix, and Red Buildings do not. If you are traveling with seniors or large luggage, Han-Kuang Building is recommended, or ask the front desk about luggage assistance.',
+                    parking:'Hotel guests can show the park parking-payment receipt at check-in to receive the NT$180 parking credit.'
+                },
+                ja: {
+                    q:{checkin:'📍 チェックインはどこ？',elevator:'🛗 エレベーターがある棟は？',parking:'🅿️ 駐車料金はいくら？'},
+                    generic:'このご質問については、ページ内の最新ガイドをご確認いただくか、サービスカウンターへお問い合わせください。',
+                    checkin:'チェックインは【溪頭福華 雲杉楼1Fロビー】です。平日は15:00以降、土・日・祝日は16:00以降に手続きできます。',
+                    elevator:'現在、エレベーターがあるのは【漢光楼】のみです。大学楼、鳳凰楼、紅楼にはありません。高齢者や大型荷物がある場合は漢光楼をおすすめします。荷物サポートはフロントへご相談ください。',
+                    parking:'宿泊者は園区の駐車料金領収書をチェックイン時に提示すると、NT$180の駐車割引を受けられます。'
+                },
+                ko: {
+                    q:{checkin:'📍 체크인은 어디인가요?',elevator:'🛗 엘리베이터가 있는 동은?',parking:'🅿️ 주차요금은 얼마인가요?'},
+                    generic:'이 질문은 페이지의 최신 안내를 참고하시거나 서비스 데스크에 문의해 주세요.',
+                    checkin:'체크인은 【시터우 하워드 운삼루 1층 로비】에서 진행합니다. 평일은 15:00 이후, 토·일요일 및 공휴일은 16:00 이후 체크인할 수 있습니다.',
+                    elevator:'현재 엘리베이터가 있는 곳은 【한광동】뿐입니다. 대학동, 봉황동, 홍루에는 없습니다. 어르신이나 큰 짐이 있다면 한광동을 추천하며, 짐 지원은 프런트에 문의하세요.',
+                    parking:'숙박객은 공원 주차 결제 영수증을 체크인 시 제시하면 NT$180 주차 할인을 받을 수 있습니다.'
                 }
-                appendMessage('ai', reply);
-            }, 600);
+            };
+            const pack = AI_CHAT[lang] || AI_CHAT.zh;
+            let category = null;
+            if (['checkin','elevator','parking'].includes(text)) category = text;
+            const shownText = category ? pack.q[category] : text;
+            appendMessage('user', shownText);
+
+            setTimeout(() => {
+                if (!category) {
+                    const q = String(text).toLowerCase();
+                    if (/check-?in|入住|チェックイン|체크인/.test(q)) category = 'checkin';
+                    else if (/電梯|elevator|エレベーター|엘리베이터/.test(q)) category = 'elevator';
+                    else if (/停車|parking|駐車|주차/.test(q)) category = 'parking';
+                }
+                appendMessage('ai', category ? pack[category] : pack.generic);
+            }, 250);
         }
 
         function handleSend() {
@@ -912,10 +948,80 @@
             return payload;
         }
 
+        
+        function localizeGPSMessage(message) {
+            if (typeof CURRENT_LANG === 'undefined' || CURRENT_LANG === 'zh') return message;
+            const lang = CURRENT_LANG;
+            const exact = {
+                en:{
+                    '⚠️ 此裝置或瀏覽器不支援 GPS 定位功能。':'⚠️ This device or browser does not support GPS location.',
+                    '📡 正在取得目前位置，請允許瀏覽器使用定位…':'📡 Getting your location. Please allow location access in your browser…',
+                    '📡 已取得位置，正在傳送至智慧導覽後台…':'📡 Location acquired. Sending it to the smart-guide system…',
+                    '您尚未允許定位權限，請在瀏覽器設定中開啟位置權限。':'Location permission has not been granted. Enable it in your browser settings.',
+                    '目前無法取得您的位置，請確認 GPS 或網路是否開啟。':'Unable to get your location. Check that GPS and your network are enabled.',
+                    '取得位置逾時，請再試一次。':'Location request timed out. Please try again.',
+                    '定位發生錯誤，請稍後再試。':'A location error occurred. Please try again later.',
+                    '📡 正在取得目前位置，取得後會自動開啟 Google Maps 導航…':'📡 Getting your location. Google Maps navigation will open automatically…',
+                    '📡 定位成功，正在同步至後台並開啟 Google Maps 導航…':'📡 Location found. Syncing and opening Google Maps navigation…',
+                    '✅ 定位已同步至後台，並已開啟 Google Maps 導航。':'✅ Location synced and Google Maps navigation has opened.',
+                    '⚠️ 導航已開啟，但定位資料未成功寫入後台。':'⚠️ Navigation opened, but the location data could not be saved.',
+                    '⚠️ 無法取得目前位置，已改為開啟溪頭福華的 Google Maps 搜尋頁。':'⚠️ Unable to get your current location. Opening the Howard Resort Xitou Google Maps search page instead.'
+                },
+                ja:{
+                    '⚠️ 此裝置或瀏覽器不支援 GPS 定位功能。':'⚠️ この端末またはブラウザはGPS位置情報に対応していません。',
+                    '📡 正在取得目前位置，請允許瀏覽器使用定位…':'📡 現在地を取得しています。ブラウザの位置情報を許可してください…',
+                    '📡 已取得位置，正在傳送至智慧導覽後台…':'📡 現在地を取得しました。スマートガイドへ送信しています…',
+                    '您尚未允許定位權限，請在瀏覽器設定中開啟位置權限。':'位置情報が許可されていません。ブラウザ設定で位置情報を有効にしてください。',
+                    '目前無法取得您的位置，請確認 GPS 或網路是否開啟。':'現在地を取得できません。GPSまたはネットワークをご確認ください。',
+                    '取得位置逾時，請再試一次。':'位置情報の取得がタイムアウトしました。もう一度お試しください。',
+                    '定位發生錯誤，請稍後再試。':'位置情報エラーが発生しました。後でもう一度お試しください。',
+                    '📡 正在取得目前位置，取得後會自動開啟 Google Maps 導航…':'📡 現在地を取得しています。取得後Google Mapsナビを自動で開きます…',
+                    '📡 定位成功，正在同步至後台並開啟 Google Maps 導航…':'📡 現在地を取得しました。同期してGoogle Mapsナビを開いています…',
+                    '✅ 定位已同步至後台，並已開啟 Google Maps 導航。':'✅ 位置情報を同期し、Google Mapsナビを開きました。',
+                    '⚠️ 導航已開啟，但定位資料未成功寫入後台。':'⚠️ ナビは開きましたが、位置情報を保存できませんでした。',
+                    '⚠️ 無法取得目前位置，已改為開啟溪頭福華的 Google Maps 搜尋頁。':'⚠️ 現在地を取得できないため、溪頭福華のGoogle Maps検索ページを開きます。'
+                },
+                ko:{
+                    '⚠️ 此裝置或瀏覽器不支援 GPS 定位功能。':'⚠️ 이 기기 또는 브라우저는 GPS 위치 기능을 지원하지 않습니다.',
+                    '📡 正在取得目前位置，請允許瀏覽器使用定位…':'📡 현재 위치를 가져오는 중입니다. 브라우저의 위치 권한을 허용해 주세요…',
+                    '📡 已取得位置，正在傳送至智慧導覽後台…':'📡 위치를 확인했습니다. 스마트 가이드 시스템으로 전송 중입니다…',
+                    '您尚未允許定位權限，請在瀏覽器設定中開啟位置權限。':'위치 권한이 허용되지 않았습니다. 브라우저 설정에서 위치 권한을 켜 주세요.',
+                    '目前無法取得您的位置，請確認 GPS 或網路是否開啟。':'현재 위치를 가져올 수 없습니다. GPS와 네트워크가 켜져 있는지 확인하세요.',
+                    '取得位置逾時，請再試一次。':'위치 요청 시간이 초과되었습니다. 다시 시도하세요.',
+                    '定位發生錯誤，請稍後再試。':'위치 오류가 발생했습니다. 잠시 후 다시 시도하세요.',
+                    '📡 正在取得目前位置，取得後會自動開啟 Google Maps 導航…':'📡 현재 위치를 가져오는 중입니다. 확인 후 Google Maps 내비게이션이 자동으로 열립니다…',
+                    '📡 定位成功，正在同步至後台並開啟 Google Maps 導航…':'📡 위치 확인 완료. 동기화 후 Google Maps 내비게이션을 여는 중입니다…',
+                    '✅ 定位已同步至後台，並已開啟 Google Maps 導航。':'✅ 위치가 동기화되었고 Google Maps 내비게이션이 열렸습니다.',
+                    '⚠️ 導航已開啟，但定位資料未成功寫入後台。':'⚠️ 내비게이션은 열렸지만 위치 데이터를 저장하지 못했습니다.',
+                    '⚠️ 無法取得目前位置，已改為開啟溪頭福華的 Google Maps 搜尋頁。':'⚠️ 현재 위치를 가져올 수 없어 시터우 하워드 리조트 Google Maps 검색 페이지를 엽니다.'
+                }
+            };
+            if (exact[lang] && exact[lang][message]) return exact[lang][message];
+
+            if (message.startsWith('✅ 定位已分享至後台｜旅客代號 ')) {
+                const tail = message.replace('✅ 定位已分享至後台｜旅客代號 ', '');
+                if (lang === 'en') return '✅ Location shared｜Guest code ' + tail.replace('（精確度約 ', ' (accuracy approx. ').replace(' 公尺）', ' m)');
+                if (lang === 'ja') return '✅ 位置情報を共有しました｜ゲストコード ' + tail.replace('（精確度約 ', '（精度 約 ').replace(' 公尺）', ' m）');
+                if (lang === 'ko') return '✅ 위치 공유 완료｜게스트 코드 ' + tail.replace('（精確度約 ', ' (정확도 약 ').replace(' 公尺）', ' m)');
+            }
+            if (message.startsWith('⚠️ GPS 已取得，但後台儲存失敗：')) {
+                const err = message.split('：').slice(1).join('：');
+                if (lang === 'en') return '⚠️ GPS location acquired, but saving failed: ' + err;
+                if (lang === 'ja') return '⚠️ GPS位置情報は取得しましたが、保存に失敗しました：' + err;
+                if (lang === 'ko') return '⚠️ GPS 위치는 확인했지만 저장에 실패했습니다: ' + err;
+            }
+            if (message.startsWith('⚠️ ')) {
+                const raw = message.slice(3);
+                const translated = exact[lang] && exact[lang][raw];
+                if (translated) return '⚠️ ' + translated.replace(/^⚠️\s*/, '');
+            }
+            return message;
+        }
+
         function updateGPSStatus(message, isError = false) {
             const box = document.getElementById('gpsStatus');
             if (!box) return;
-            box.textContent = message;
+            box.textContent = localizeGPSMessage(message);
             box.className = isError
                 ? 'mt-3 text-xs text-red-100 bg-red-500/20 border border-red-200/20 rounded-xl px-4 py-3'
                 : 'mt-3 text-xs text-cream bg-white/10 border border-white/10 rounded-xl px-4 py-3';
@@ -1078,6 +1184,9 @@
         };
         Object.keys(EXTRA_I18N).forEach(lang => Object.assign(FULL_I18N[lang] || (FULL_I18N[lang] = {}), EXTRA_I18N[lang]));
         Object.keys(STAY_GUIDE_I18N).forEach(lang => Object.assign(FULL_I18N[lang] || (FULL_I18N[lang] = {}), STAY_GUIDE_I18N[lang]));
+        const COMPLETE_I18N_PATCH = {"en":{"溪頭福華-智慧旅遊導覽 2.0":"Howard Resort Xitou - Smart Travel Guide 2.0","智慧導覽 2.0":"Smart Guide 2.0","語言 Language":"Language","繁中":"繁中","日本語":"日本語","本飯店位在「溪頭自然教育園區」內":"The hotel is located inside the Xitou Nature Education Area.","入園先支付 NT$180停車費，請保留綠色票券／繳費憑證":"Pay the NT$180 parking fee on entry and keep the green ticket / receipt.","由溪頭自然教育園區收取；Check-in 時請出示憑證，依住房方案辦理停車折抵或好禮兌換。":"Collected by the Xitou Nature Education Area. Show the receipt at check-in for the parking credit or gift redemption included in your room package.","1 號門 22:00 鎖閉、2 號門 17:00 鎖閉，錯過就進不來。次日早上7:00園區才可放行人車進出。":"Gate 1 closes at 22:00 and Gate 2 at 17:00. Entry is unavailable after closing; people and vehicles may enter again from 07:00 the next morning.","住宿區域附近停車格若停滿，請依地圖或服務人員指引，停往園區內其他區域。":"If parking near the accommodation area is full, follow the map or staff directions to other parking areas in the park.","🔒 溪頭自然教育園區管制閘門鎖閉時間":"🔒 Xitou Nature Education Area gate closing times","NT$180 現金・假日建議 07:00 前到":"NT$180 cash · On holidays, arrive before 07:00","🪙 溪頭自然教育園區汽車規費":"🪙 Xitou Nature Education Area vehicle fee","● 建議 07:00 前抵達第一停車場。":"● We recommend arriving at Parking Lot 1 before 07:00.","憑券享指定套餐或森林下午茶每房 180 元折抵優惠。":"Use the voucher for NT$180 off a designated set meal or forest afternoon tea per room.","房價已含園區門票；自駕住宿旅客仍需依園區規定辦理車輛入園與停車。抵達景觀門後請依現場人員指示前往第一停車場。":"Your room rate includes park admission. Guests arriving by car must still follow vehicle-entry and parking rules. After reaching the Scenic Gate, follow staff directions to Parking Lot 1.","入園／停車後請妥善保留綠色票券或繳費憑證。Check-in 時請出示，依住房方案辦理停車折抵或住房好禮兌換。":"Keep the green ticket or payment receipt after entering / parking. Show it at check-in to receive the parking credit or guest gift included in your room package.","入園後先停車／前往雲杉樓 1F 辦理入住，領取房卡後再依住宿棟別處理行李。大型行李不必一入園就全部卸下。":"After entering the park, park first / go to Spruce Building 1F to check in. After collecting your room key, handle your luggage according to your accommodation building. You do not need to unload all large luggage immediately.","一般入住依訂房與當日公告辦理；原版資訊以平日 15:00 後、假日／特殊日期可能 16:00 後為提醒，退房請於 11:00 前完成。實際時間以訂房確認與飯店當日公告為準。":"Check-in follows your booking confirmation and the day's notice. As a general reminder, weekday check-in is after 15:00 and weekends / special dates may be after 16:00. Check-out is by 11:00. Please follow your booking confirmation and the hotel's current notice.","響應環保旅宿政策，建議自備牙刷、牙膏、刮鬍刀等一次性個人用品。洗髮精、沐浴乳、毛巾與浴巾等，以房內現場提供內容為準。":"To support eco-friendly lodging, please bring disposable personal items such as a toothbrush, toothpaste, and razor. Shampoo, body wash, towels, and bath towels are subject to what is provided in the room.","漢光樓有電梯、動線較平坦；大學樓無電梯且步行較遠；鳳凰樓有較長階梯。若同行有長輩、推車或大型行李，請優先確認棟別動線。":"Han-Kuang Building has an elevator and a flatter route. University Building has no elevator and is farther on foot. Phoenix Building has a longer staircase. If traveling with seniors, a stroller, or large luggage, confirm the route to your building first.","非住宿旅客進入台大實驗林園區，仍須依園區售票、停車與開放時間規定辦理。若需用餐、會客或進入飯店公共區域，建議出發前先向飯店確認。":"Day visitors must still follow the park's ticketing, parking, and opening-hour rules. If you plan to dine, meet someone, or use hotel public areas, please check with the hotel before departure.","租車、純接駁或大型遊覽車的入園方式可能不同於一般住宿自駕。建議提前告知車種、人數及抵達時間，並依景觀門與園區人員指示通行。":"Entry procedures for rental cars, shuttle-only vehicles, or coaches may differ from regular guest self-driving. Inform the hotel of vehicle type, party size, and arrival time in advance, and follow Scenic Gate / park staff instructions.","園區全面禁菸；寵物、車輛、門禁及自然環境相關規範請依台大實驗林最新公告與現場標示為準。重要規定若有變動，以當日現場資訊優先。":"Smoking is prohibited throughout the park. Follow the latest on-site notices for pets, vehicles, gate access, and environmental rules. If important rules change, same-day on-site information takes priority.","入園／停車的綠色票券或繳費憑證，Check-in 時請出示；住宿期間若需再次確認，也建議隨身保留。":"Show the green entry / parking ticket or payment receipt at check-in and keep it with you during your stay in case it is needed again.","大小車入園後不必急著先卸全部行李。先依指示辦理入住、領房卡，再依棟別決定最佳卸行李位置。":"You do not need to unload all luggage immediately after entering by vehicle. Check in and collect your room key first, then choose the best unloading point for your building.","建議自備牙刷、牙膏、刮鬍刀等一次性個人衛生用品；毛巾、浴巾等以飯店現場提供內容為準。":"Please bring disposable personal items such as a toothbrush, toothpaste, and razor. Towels and bath towels are subject to hotel provision.","園區全面禁菸，並依溪頭自然教育園區最新公告遵守寵物、車輛與自然環境相關規範；現場公告優先。":"Smoking is prohibited throughout the park. Follow the latest Xitou Nature Education Area rules for pets, vehicles, and the natural environment; on-site notices take priority.","非住宿旅客入園仍須依園區售票與停車規則辦理；若需用餐、會客或進入飯店公共區域，建議先向飯店確認當日規範。":"Day visitors must follow park ticketing and parking rules. For dining, meetings, or hotel public-area access, check the day's rules with the hotel first.","純接駁、租車或大型車輛的入園方式可能與一般住宿自駕不同；請先告知車種與人數，並依園區人員指示通行。":"Entry procedures for shuttles, rental cars, or large vehicles may differ from ordinary guest self-driving. Provide the vehicle type and party size in advance and follow park staff directions.","入住登記櫃檯位於 「溪頭福華雲杉樓1樓大廳」。辦理入住時間為 平日下午 15:00 後，週六、週日下午 16:00 後，退房時間為 上午 11:00 前。提前抵達可先寄放行李。":"The check-in desk is in the 1F lobby of Howard Resort Xitou's Spruce Building. Check-in is after 15:00 on weekdays and after 16:00 on Saturdays and Sundays. Check-out is by 11:00. Early arrivals may store luggage first.","目前飯店僅 「漢光樓」 配備電梯；大學樓、鳳凰樓與紅樓皆無電梯設施。若同行有長輩或行動不便者，建議優先預約 「漢光樓」。":"Currently, only Han-Kuang Building has an elevator. University, Phoenix, and Red Buildings do not. If traveling with seniors or guests with limited mobility, Han-Kuang Building is recommended.","住房旅客享入園停車折抵優惠。入園時繳交之停車費，請保留繳費單據，並於 Check-in 時出示給櫃檯人員，即可辦理 180 元住宿停車折抵。":"Hotel guests receive a parking credit. Keep the parking payment receipt and show it at check-in to receive the NT$180 guest parking credit.","可先將車輛臨停於 「雲杉樓1樓大廳門口臨停區」 卸下行李，櫃檯服務中心提供行李暫存及協助運送至住宿棟別之服務。":"You may briefly stop at the unloading area by the Spruce Building 1F lobby to unload luggage. The service desk can store luggage and assist with delivery to your accommodation building.","由景觀門進入後，沿園區動線前往雲杉樓辦理入住。住宿旅客辦理入住時，記得出示停車繳費憑證，以利辦理停車折抵。":"After entering through the Scenic Gate, follow the park route to Spruce Building for check-in. Remember to show your parking payment receipt to receive the guest parking credit.","確認將於 22:00 前抵達 景觀門（逾時鎖閉無法進入）":"Confirm that you will reach the Scenic Gate before 22:00 (no entry after it closes).","備好溪頭自然教育園區汽車入場停車費 NT$180 元":"Prepare the NT$180 vehicle parking fee for the Xitou Nature Education Area.","假日、連假建議於 7:00 前抵達，避免園區停車位額滿":"On weekends and holidays, arrive before 07:00 to reduce the risk of full parking.","📍 Check-in 在哪裡？":"📍 Where is check-in?","🛗 哪一棟有電梯？":"🛗 Which building has an elevator?","🅿️ 停車費多少錢？":"🅿️ How much is parking?","問 AI 客服":"Ask AI Concierge","AI客服":"AI","導航":"Guide","停車":"Parking"},"ja":{"溪頭福華-智慧旅遊導覽 2.0":"溪頭福華リゾート－スマート旅行ガイド 2.0","智慧導覽 2.0":"スマートガイド 2.0","語言 Language":"言語 Language","繁中":"繁中","日本語":"日本語","本飯店位在「溪頭自然教育園區」內":"当ホテルは「溪頭自然教育園区」内にあります。","入園先支付 NT$180停車費，請保留綠色票券／繳費憑證":"入園時にNT$180の駐車料金を支払い、緑色チケット／領収書を保管してください。","由溪頭自然教育園區收取；Check-in 時請出示憑證，依住房方案辦理停車折抵或好禮兌換。":"溪頭自然教育園区が徴収します。チェックイン時に領収書を提示し、宿泊プランに応じて駐車料金の割引または宿泊特典と交換してください。","1 號門 22:00 鎖閉、2 號門 17:00 鎖閉，錯過就進不來。次日早上7:00園區才可放行人車進出。":"1号門は22:00、2号門は17:00に閉鎖されます。閉鎖後は入園できません。翌朝07:00から人・車両の通行が再開されます。","住宿區域附近停車格若停滿，請依地圖或服務人員指引，停往園區內其他區域。":"宿泊棟付近の駐車スペースが満車の場合は、地図またはスタッフの案内に従い、園内の他の駐車エリアをご利用ください。","🔒 溪頭自然教育園區管制閘門鎖閉時間":"🔒 溪頭自然教育園区 ゲート閉鎖時間","NT$180 現金・假日建議 07:00 前到":"NT$180 現金・休日は07:00前の到着を推奨","🪙 溪頭自然教育園區汽車規費":"🪙 溪頭自然教育園区 車両料金","● 建議 07:00 前抵達第一停車場。":"● 第1駐車場には07:00前の到着をおすすめします。","憑券享指定套餐或森林下午茶每房 180 元折抵優惠。":"券の提示で、指定セットメニューまたは森のアフタヌーンティーが1室につきNT$180割引になります。","房價已含園區門票；自駕住宿旅客仍需依園區規定辦理車輛入園與停車。抵達景觀門後請依現場人員指示前往第一停車場。":"宿泊料金には園区入場券が含まれています。自家用車でお越しの宿泊者は、車両入園・駐車の規定に従う必要があります。景観門到着後、スタッフの案内に従って第1駐車場へお進みください。","入園／停車後請妥善保留綠色票券或繳費憑證。Check-in 時請出示，依住房方案辦理停車折抵或住房好禮兌換。":"入園／駐車後は緑色チケットまたは支払い証明を保管し、チェックイン時に提示してください。宿泊プランに応じて駐車割引または宿泊特典の交換を行います。","入園後先停車／前往雲杉樓 1F 辦理入住，領取房卡後再依住宿棟別處理行李。大型行李不必一入園就全部卸下。":"入園後はまず駐車するか、雲杉楼1Fでチェックインしてください。ルームキー受領後、宿泊棟に合わせて荷物を移動します。大型荷物を入園直後にすべて降ろす必要はありません。","一般入住依訂房與當日公告辦理；原版資訊以平日 15:00 後、假日／特殊日期可能 16:00 後為提醒，退房請於 11:00 前完成。實際時間以訂房確認與飯店當日公告為準。":"チェックイン時間は予約確認と当日の案内に従ってください。目安として平日は15:00以降、休日／特定日は16:00以降の場合があります。チェックアウトは11:00までです。実際の時間は予約確認とホテル当日の案内を優先してください。","響應環保旅宿政策，建議自備牙刷、牙膏、刮鬍刀等一次性個人用品。洗髮精、沐浴乳、毛巾與浴巾等，以房內現場提供內容為準。":"環境配慮型宿泊方針により、歯ブラシ・歯磨き粉・カミソリなどの使い捨て個人用品はご持参ください。シャンプー、ボディソープ、タオル、バスタオルは客室内の提供内容をご確認ください。","漢光樓有電梯、動線較平坦；大學樓無電梯且步行較遠；鳳凰樓有較長階梯。若同行有長輩、推車或大型行李，請優先確認棟別動線。":"漢光楼にはエレベーターがあり、比較的平坦です。大学楼はエレベーターがなく徒歩距離が長く、鳳凰楼には長い階段があります。高齢者、ベビーカー、大型荷物がある場合は、宿泊棟の動線を事前に確認してください。","非住宿旅客進入台大實驗林園區，仍須依園區售票、停車與開放時間規定辦理。若需用餐、會客或進入飯店公共區域，建議出發前先向飯店確認。":"宿泊しない来園者も、園区の入場券・駐車・開園時間の規定に従う必要があります。食事、面会、ホテル共用エリアの利用を予定している場合は、出発前にホテルへご確認ください。","租車、純接駁或大型遊覽車的入園方式可能不同於一般住宿自駕。建議提前告知車種、人數及抵達時間，並依景觀門與園區人員指示通行。":"レンタカー、送迎専用車、大型観光バスは一般の宿泊自家用車と入園方法が異なる場合があります。車種・人数・到着時間を事前に伝え、景観門および園区スタッフの指示に従ってください。","園區全面禁菸；寵物、車輛、門禁及自然環境相關規範請依台大實驗林最新公告與現場標示為準。重要規定若有變動，以當日現場資訊優先。":"園内は全面禁煙です。ペット、車両、ゲート、自然環境に関する規定は最新の現地掲示に従ってください。重要な規定に変更がある場合は、当日の現地情報を優先します。","入園／停車的綠色票券或繳費憑證，Check-in 時請出示；住宿期間若需再次確認，也建議隨身保留。":"入園／駐車の緑色チケットまたは支払い証明はチェックイン時に提示し、滞在中も必要に備えて携帯してください。","大小車入園後不必急著先卸全部行李。先依指示辦理入住、領房卡，再依棟別決定最佳卸行李位置。":"車両で入園後、すぐに荷物をすべて降ろす必要はありません。まずチェックインしてルームキーを受け取り、宿泊棟に合わせて最適な荷降ろし場所を決めてください。","建議自備牙刷、牙膏、刮鬍刀等一次性個人衛生用品；毛巾、浴巾等以飯店現場提供內容為準。":"歯ブラシ、歯磨き粉、カミソリなどの使い捨て個人衛生用品はご持参ください。タオル・バスタオル等はホテルの提供内容をご確認ください。","園區全面禁菸，並依溪頭自然教育園區最新公告遵守寵物、車輛與自然環境相關規範；現場公告優先。":"園内は全面禁煙です。ペット、車両、自然環境に関する規定は溪頭自然教育園区の最新案内に従い、現地掲示を優先してください。","非住宿旅客入園仍須依園區售票與停車規則辦理；若需用餐、會客或進入飯店公共區域，建議先向飯店確認當日規範。":"宿泊しない来園者も入場券と駐車規則に従う必要があります。食事、面会、ホテル共用エリアを利用する場合は、当日の規定をホテルに確認してください。","純接駁、租車或大型車輛的入園方式可能與一般住宿自駕不同；請先告知車種與人數，並依園區人員指示通行。":"送迎専用車、レンタカー、大型車両は一般の宿泊自家用車と入園方法が異なる場合があります。車種と人数を事前に伝え、園区スタッフの指示に従ってください。","入住登記櫃檯位於 「溪頭福華雲杉樓1樓大廳」。辦理入住時間為 平日下午 15:00 後，週六、週日下午 16:00 後，退房時間為 上午 11:00 前。提前抵達可先寄放行李。":"チェックインカウンターは「溪頭福華 雲杉楼1Fロビー」にあります。平日は15:00以降、土・日は16:00以降にチェックインできます。チェックアウトは11:00までです。早く到着した場合は荷物を預けられます。","目前飯店僅 「漢光樓」 配備電梯；大學樓、鳳凰樓與紅樓皆無電梯設施。若同行有長輩或行動不便者，建議優先預約 「漢光樓」。":"現在、エレベーターがあるのは「漢光楼」のみです。大学楼、鳳凰楼、紅楼にはエレベーターがありません。高齢者や移動に配慮が必要な方がいる場合は「漢光楼」をおすすめします。","住房旅客享入園停車折抵優惠。入園時繳交之停車費，請保留繳費單據，並於 Check-in 時出示給櫃檯人員，即可辦理 180 元住宿停車折抵。":"宿泊者は駐車料金の割引を受けられます。入園時の駐車料金領収書を保管し、チェックイン時にフロントへ提示するとNT$180の宿泊者駐車割引を受けられます。","可先將車輛臨停於 「雲杉樓1樓大廳門口臨停區」 卸下行李，櫃檯服務中心提供行李暫存及協助運送至住宿棟別之服務。":"「雲杉楼1Fロビー入口の一時停車エリア」で荷物を降ろすことができます。サービスカウンターでは荷物預かりと宿泊棟への運搬サポートを行っています。","由景觀門進入後，沿園區動線前往雲杉樓辦理入住。住宿旅客辦理入住時，記得出示停車繳費憑證，以利辦理停車折抵。":"景観門から入園後、園内ルートに沿って雲杉楼へ進みチェックインしてください。宿泊者は駐車料金の領収書を提示して駐車割引の手続きを行ってください。","確認將於 22:00 前抵達 景觀門（逾時鎖閉無法進入）":"22:00前に景観門へ到着することを確認（閉鎖後は入園不可）","備好溪頭自然教育園區汽車入場停車費 NT$180 元":"溪頭自然教育園区の車両駐車料金NT$180を準備","假日、連假建議於 7:00 前抵達，避免園區停車位額滿":"休日・連休は駐車場満車を避けるため07:00前の到着を推奨","📍 Check-in 在哪裡？":"📍 チェックインはどこ？","🛗 哪一棟有電梯？":"🛗 エレベーターがある棟は？","🅿️ 停車費多少錢？":"🅿️ 駐車料金はいくら？","問 AI 客服":"AIに質問","AI客服":"AI","導航":"案内","停車":"駐車"},"ko":{"溪頭福華-智慧旅遊導覽 2.0":"시터우 하워드 리조트 - 스마트 여행 가이드 2.0","智慧導覽 2.0":"스마트 가이드 2.0","語言 Language":"언어 Language","繁中":"繁中","日本語":"日本語","本飯店位在「溪頭自然教育園區」內":"호텔은 ‘시터우 자연교육원구’ 안에 있습니다.","入園先支付 NT$180停車費，請保留綠色票券／繳費憑證":"입장 시 NT$180 주차요금을 결제하고 녹색 티켓 / 영수증을 보관하세요.","由溪頭自然教育園區收取；Check-in 時請出示憑證，依住房方案辦理停車折抵或好禮兌換。":"시터우 자연교육원구가 부과합니다. 체크인 시 영수증을 제시하고 숙박 상품에 따라 주차 할인 또는 숙박 혜택 교환을 받으세요.","1 號門 22:00 鎖閉、2 號門 17:00 鎖閉，錯過就進不來。次日早上7:00園區才可放行人車進出。":"1번 게이트는 22:00, 2번 게이트는 17:00에 닫힙니다. 닫힌 후에는 입장할 수 없으며 다음 날 07:00부터 사람과 차량의 출입이 다시 가능합니다.","住宿區域附近停車格若停滿，請依地圖或服務人員指引，停往園區內其他區域。":"숙박 구역 근처 주차 공간이 만차이면 지도 또는 직원 안내에 따라 공원 내 다른 주차 구역을 이용하세요.","🔒 溪頭自然教育園區管制閘門鎖閉時間":"🔒 시터우 자연교육원구 게이트 운영 종료 시간","NT$180 現金・假日建議 07:00 前到":"NT$180 현금 · 휴일에는 07:00 이전 도착 권장","🪙 溪頭自然教育園區汽車規費":"🪙 시터우 자연교육원구 차량 요금","● 建議 07:00 前抵達第一停車場。":"● 제1주차장에는 07:00 이전 도착을 권장합니다.","憑券享指定套餐或森林下午茶每房 180 元折抵優惠。":"쿠폰으로 지정 세트 메뉴 또는 포레스트 애프터눈티를 객실당 NT$180 할인받을 수 있습니다.","房價已含園區門票；自駕住宿旅客仍需依園區規定辦理車輛入園與停車。抵達景觀門後請依現場人員指示前往第一停車場。":"객실 요금에는 공원 입장권이 포함되어 있습니다. 자가용 숙박객은 차량 입장 및 주차 규정을 따라야 합니다. 경관문 도착 후 직원 안내에 따라 제1주차장으로 이동하세요.","入園／停車後請妥善保留綠色票券或繳費憑證。Check-in 時請出示，依住房方案辦理停車折抵或住房好禮兌換。":"입장 / 주차 후 녹색 티켓 또는 결제 영수증을 보관하세요. 체크인 시 제시하면 숙박 상품에 따라 주차 할인 또는 숙박 혜택 교환을 받을 수 있습니다.","入園後先停車／前往雲杉樓 1F 辦理入住，領取房卡後再依住宿棟別處理行李。大型行李不必一入園就全部卸下。":"입장 후 먼저 주차하거나 운삼루 1층에서 체크인하세요. 객실 키를 받은 뒤 숙박동에 맞춰 짐을 이동하면 됩니다. 큰 짐을 입장 즉시 모두 내릴 필요는 없습니다.","一般入住依訂房與當日公告辦理；原版資訊以平日 15:00 後、假日／特殊日期可能 16:00 後為提醒，退房請於 11:00 前完成。實際時間以訂房確認與飯店當日公告為準。":"체크인 시간은 예약 확인 및 당일 안내를 따릅니다. 일반 안내로 평일은 15:00 이후, 휴일 / 특별일은 16:00 이후일 수 있습니다. 체크아웃은 11:00까지입니다. 실제 시간은 예약 확인과 호텔 당일 안내를 우선합니다.","響應環保旅宿政策，建議自備牙刷、牙膏、刮鬍刀等一次性個人用品。洗髮精、沐浴乳、毛巾與浴巾等，以房內現場提供內容為準。":"친환경 숙박 정책에 따라 칫솔, 치약, 면도기 등 일회용 개인용품을 준비해 주세요. 샴푸, 바디워시, 수건, 목욕수건은 객실 내 제공 품목을 확인해 주세요.","漢光樓有電梯、動線較平坦；大學樓無電梯且步行較遠；鳳凰樓有較長階梯。若同行有長輩、推車或大型行李，請優先確認棟別動線。":"한광동은 엘리베이터가 있고 동선이 비교적 평탄합니다. 대학동은 엘리베이터가 없고 도보 거리가 길며, 봉황동에는 긴 계단이 있습니다. 어르신, 유모차 또는 큰 짐이 있다면 숙박동 동선을 먼저 확인하세요.","非住宿旅客進入台大實驗林園區，仍須依園區售票、停車與開放時間規定辦理。若需用餐、會客或進入飯店公共區域，建議出發前先向飯店確認。":"비숙박 방문객도 공원의 입장권, 주차, 운영시간 규정을 따라야 합니다. 식사, 면회 또는 호텔 공용구역 이용이 필요하면 출발 전에 호텔에 확인하세요.","租車、純接駁或大型遊覽車的入園方式可能不同於一般住宿自駕。建議提前告知車種、人數及抵達時間，並依景觀門與園區人員指示通行。":"렌터카, 셔틀 전용 차량 또는 대형 관광버스는 일반 자가용 숙박객과 입장 방식이 다를 수 있습니다. 차량 종류, 인원, 도착 시간을 미리 알리고 경관문 및 공원 직원 안내를 따르세요.","園區全面禁菸；寵物、車輛、門禁及自然環境相關規範請依台大實驗林最新公告與現場標示為準。重要規定若有變動，以當日現場資訊優先。":"공원 전 구역은 금연입니다. 반려동물, 차량, 출입문 및 자연환경 규정은 최신 현장 안내를 따르세요. 중요한 규정이 변경되면 당일 현장 정보가 우선합니다.","入園／停車的綠色票券或繳費憑證，Check-in 時請出示；住宿期間若需再次確認，也建議隨身保留。":"입장 / 주차 녹색 티켓 또는 결제 영수증은 체크인 시 제시하고, 숙박 중 다시 필요할 수 있으니 보관하세요.","大小車入園後不必急著先卸全部行李。先依指示辦理入住、領房卡，再依棟別決定最佳卸行李位置。":"차량 입장 후 짐을 모두 바로 내릴 필요는 없습니다. 먼저 체크인하고 객실 키를 받은 뒤 숙박동에 맞는 가장 좋은 하차 지점을 선택하세요.","建議自備牙刷、牙膏、刮鬍刀等一次性個人衛生用品；毛巾、浴巾等以飯店現場提供內容為準。":"칫솔, 치약, 면도기 등 일회용 개인 위생용품은 준비해 주세요. 수건과 목욕수건은 호텔 현장 제공 품목을 확인하세요.","園區全面禁菸，並依溪頭自然教育園區最新公告遵守寵物、車輛與自然環境相關規範；現場公告優先。":"공원 전 구역은 금연입니다. 반려동물, 차량 및 자연환경 관련 규정은 시터우 자연교육원구 최신 공지를 따르며 현장 안내가 우선합니다.","非住宿旅客入園仍須依園區售票與停車規則辦理；若需用餐、會客或進入飯店公共區域，建議先向飯店確認當日規範。":"비숙박 방문객도 공원의 입장권 및 주차 규정을 따라야 합니다. 식사, 면회 또는 호텔 공용구역 이용 시 당일 규정을 호텔에 먼저 확인하세요.","純接駁、租車或大型車輛的入園方式可能與一般住宿自駕不同；請先告知車種與人數，並依園區人員指示通行。":"셔틀 전용 차량, 렌터카 또는 대형 차량은 일반 자가용 숙박객과 입장 방식이 다를 수 있습니다. 차량 종류와 인원을 미리 알리고 공원 직원 안내를 따르세요.","入住登記櫃檯位於 「溪頭福華雲杉樓1樓大廳」。辦理入住時間為 平日下午 15:00 後，週六、週日下午 16:00 後，退房時間為 上午 11:00 前。提前抵達可先寄放行李。":"체크인 카운터는 ‘시터우 하워드 운삼루 1층 로비’에 있습니다. 평일은 15:00 이후, 토·일요일은 16:00 이후 체크인할 수 있습니다. 체크아웃은 11:00까지이며 일찍 도착하면 짐을 먼저 맡길 수 있습니다.","目前飯店僅 「漢光樓」 配備電梯；大學樓、鳳凰樓與紅樓皆無電梯設施。若同行有長輩或行動不便者，建議優先預約 「漢光樓」。":"현재 엘리베이터가 있는 곳은 ‘한광동’뿐입니다. 대학동, 봉황동, 홍루에는 엘리베이터가 없습니다. 어르신이나 이동이 불편한 분이 함께라면 한광동을 우선 추천합니다.","住房旅客享入園停車折抵優惠。入園時繳交之停車費，請保留繳費單據，並於 Check-in 時出示給櫃檯人員，即可辦理 180 元住宿停車折抵。":"숙박객은 주차 할인 혜택을 받을 수 있습니다. 입장 시 결제한 주차 영수증을 보관하고 체크인 시 프런트에 제시하면 NT$180 숙박객 주차 할인을 받을 수 있습니다.","可先將車輛臨停於 「雲杉樓1樓大廳門口臨停區」 卸下行李，櫃檯服務中心提供行李暫存及協助運送至住宿棟別之服務。":"‘운삼루 1층 로비 입구 임시정차구역’에 잠시 정차해 짐을 내릴 수 있습니다. 서비스센터에서는 짐 보관 및 숙박동 이동 지원을 제공합니다.","由景觀門進入後，沿園區動線前往雲杉樓辦理入住。住宿旅客辦理入住時，記得出示停車繳費憑證，以利辦理停車折抵。":"경관문으로 입장한 뒤 공원 동선을 따라 운삼루로 이동해 체크인하세요. 숙박객은 체크인 시 주차 결제 영수증을 제시해 주차 할인을 받으세요.","確認將於 22:00 前抵達 景觀門（逾時鎖閉無法進入）":"22:00 전에 경관문 도착 여부 확인 (폐쇄 후 입장 불가)","備好溪頭自然教育園區汽車入場停車費 NT$180 元":"시터우 자연교육원구 차량 주차요금 NT$180 준비","假日、連假建議於 7:00 前抵達，避免園區停車位額滿":"주말·연휴에는 주차 만차를 피하기 위해 07:00 이전 도착 권장","📍 Check-in 在哪裡？":"📍 체크인은 어디인가요?","🛗 哪一棟有電梯？":"🛗 엘리베이터가 있는 동은?","🅿️ 停車費多少錢？":"🅿️ 주차요금은 얼마인가요?","問 AI 客服":"AI 문의","AI客服":"AI","導航":"안내","停車":"주차"}};
+        Object.keys(COMPLETE_I18N_PATCH).forEach(lang => Object.assign(FULL_I18N[lang] || (FULL_I18N[lang] = {}), COMPLETE_I18N_PATCH[lang]));
+
 
         const JOURNEY_CONTENT = {
           zh: {
@@ -1196,6 +1305,46 @@
             });
         }
 
+        
+        function updateI18nAttributes(lang) {
+            const attrs = {
+                zh: {
+                    title:'溪頭福華-智慧旅遊導覽 2.0',
+                    desc:'溪頭福華渡假飯店智慧旅遊導覽｜入住、停車、GPS導航、住宿棟別、園區規範與智慧下一步導引',
+                    placeholder:'請輸入您的問題...',
+                    mapAlt:'溪頭福華飯店地圖'
+                },
+                en: {
+                    title:'Howard Resort Xitou - Smart Travel Guide 2.0',
+                    desc:'Howard Resort Xitou smart travel guide for check-in, parking, GPS navigation, accommodation buildings, park rules and next-step guidance.',
+                    placeholder:'Type your question...',
+                    mapAlt:'Howard Resort Xitou hotel map'
+                },
+                ja: {
+                    title:'溪頭福華リゾート－スマート旅行ガイド 2.0',
+                    desc:'溪頭福華リゾートのスマート旅行ガイド｜チェックイン、駐車、GPSナビ、宿泊棟、園内ルール、次の行動を案内。',
+                    placeholder:'ご質問を入力してください...',
+                    mapAlt:'溪頭福華ホテルマップ'
+                },
+                ko: {
+                    title:'시터우 하워드 리조트 - 스마트 여행 가이드 2.0',
+                    desc:'시터우 하워드 리조트 스마트 여행 가이드｜체크인, 주차, GPS 내비게이션, 숙박동, 공원 규정 및 다음 단계 안내.',
+                    placeholder:'질문을 입력하세요...',
+                    mapAlt:'시터우 하워드 리조트 호텔 지도'
+                }
+            };
+            const d = attrs[lang] || attrs.zh;
+            document.title = d.title;
+            const ogTitle = document.querySelector('meta[property="og:title"]');
+            const ogDesc = document.querySelector('meta[property="og:description"]');
+            if (ogTitle) ogTitle.setAttribute('content', d.title);
+            if (ogDesc) ogDesc.setAttribute('content', d.desc);
+            const input = document.getElementById('chatInput');
+            if (input) input.setAttribute('placeholder', d.placeholder);
+            const mapImg = document.querySelector('#mapModal img');
+            if (mapImg) mapImg.setAttribute('alt', d.mapAlt);
+        }
+
         function updateLanguageButtons(lang) {
             document.querySelectorAll('.lang-btn').forEach(btn => {
                 const active = btn.dataset.lang === lang;
@@ -1214,6 +1363,9 @@
             if (!ORIGINAL_TEXT_NODES.length) captureOriginalTextNodes();
             translateFullPage(lang);
             updateLanguageButtons(lang);
+            updateI18nAttributes(lang);
+            const activeMapTab = Array.from(document.querySelectorAll('.map-guide-tab')).findIndex(btn => btn.classList.contains('border-gold')) + 1;
+            if (activeMapTab > 0) showMapGuide(activeMapTab);
             const activeJourney = document.querySelector('.journey-btn.bg-forest[data-step]');
             if (activeJourney) applyJourneyStep(activeJourney.dataset.step);
             else applyJourneyStep('unsure');
@@ -1291,19 +1443,48 @@
         const interactiveSelector = 'a, button, summary, label, [role="button"], input[type="checkbox"], input[type="radio"]';
         const textSelector = 'input:not([type="checkbox"]):not([type="radio"]), textarea, [contenteditable="true"]';
 
+        let cursorX = -9999;
+        let cursorY = -9999;
+        let cursorRaf = 0;
+        let cursorMode = 'wave';
+        let cursorHiddenForText = false;
+
+        // 預先解碼兩張角色圖，避免第一次點擊/滑入按鈕時卡頓
+        const preloadWave = new Image();
+        const preloadWalk = new Image();
+        preloadWave.src = waveSrc;
+        preloadWalk.src = walkSrc;
+        if (preloadWave.decode) preloadWave.decode().catch(()=>{});
+        if (preloadWalk.decode) preloadWalk.decode().catch(()=>{});
+
+        const renderCursor = () => {
+            cursor.style.transform = `translate3d(${cursorX - 9}px, ${cursorY - 8}px, 0)`;
+            cursorRaf = 0;
+        };
+
         document.addEventListener('mousemove', (event) => {
-            cursor.style.left = `${event.clientX}px`;
-            cursor.style.top = `${event.clientY}px`;
+            cursorX = event.clientX;
+            cursorY = event.clientY;
+
+            if (!cursorRaf) cursorRaf = requestAnimationFrame(renderCursor);
             cursor.classList.add('is-visible');
 
             const target = event.target instanceof Element ? event.target : null;
-            const overText = target && target.closest(textSelector);
-            cursor.style.display = overText ? 'none' : 'block';
-            cursor.src = target && target.closest(interactiveSelector) ? walkSrc : waveSrc;
-        }, { passive: true });
+            const overText = !!(target && target.closest(textSelector));
 
-        document.addEventListener('mousedown', () => cursor.classList.add('is-active'));
-        document.addEventListener('mouseup', () => cursor.classList.remove('is-active'));
+            if (overText !== cursorHiddenForText) {
+                cursorHiddenForText = overText;
+                cursor.style.display = overText ? 'none' : 'block';
+            }
+
+            if (!overText) {
+                const nextMode = target && target.closest(interactiveSelector) ? 'walk' : 'wave';
+                if (nextMode !== cursorMode) {
+                    cursorMode = nextMode;
+                    cursor.src = nextMode === 'walk' ? walkSrc : waveSrc;
+                }
+            }
+        }, { passive: true });
         document.documentElement.addEventListener('mouseleave', () => cursor.classList.remove('is-visible'));
         document.documentElement.addEventListener('mouseenter', () => cursor.classList.add('is-visible'));
     })();
