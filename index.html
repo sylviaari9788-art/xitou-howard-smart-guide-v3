@@ -101,16 +101,18 @@
 </div>
 </div>
 <!-- Mobile language bar -->
-<div class="md:hidden bg-[#5F8778] px-4 py-3 border-t border-white/10">
-<div class="flex items-center justify-between gap-3 overflow-x-auto">
-<div class="inline-flex shrink-0 items-center gap-2 bg-[#3E6759] text-white rounded-full px-3 py-2 text-xs font-bold">
+<div class="md:hidden bg-[#5F8778] px-3 py-3 border-t border-white/10">
+<div class="w-full">
+<div class="flex items-center justify-center mb-2">
+<div class="inline-flex items-center gap-2 bg-[#3E6759] text-white rounded-full px-3 py-2 text-xs font-bold">
 <span>🌐</span><span>語言 Language</span>
 </div>
-<div class="flex items-center gap-2 shrink-0">
-<button class="lang-btn bg-gold text-forest font-bold rounded-lg px-3 py-2 text-xs" data-lang="zh" onclick="changeLanguage('zh')" type="button">繁中</button>
-<button class="lang-btn bg-[#7EA094] text-white font-bold rounded-lg px-3 py-2 text-xs" data-lang="en" onclick="changeLanguage('en')" type="button">EN</button>
-<button class="lang-btn bg-[#7EA094] text-white font-bold rounded-lg px-3 py-2 text-xs" data-lang="ja" onclick="changeLanguage('ja')" type="button">日本語</button>
-<button class="lang-btn bg-[#7EA094] text-white font-bold rounded-lg px-3 py-2 text-xs" data-lang="ko" onclick="changeLanguage('ko')" type="button">한국어</button>
+</div>
+<div class="grid grid-cols-4 gap-2 w-full">
+<button class="lang-btn min-w-0 bg-gold text-forest font-bold rounded-lg px-1.5 py-2.5 text-[11px] sm:text-xs whitespace-nowrap" data-lang="zh" onclick="changeLanguage('zh')" type="button">繁中</button>
+<button class="lang-btn min-w-0 bg-[#7EA094] text-white font-bold rounded-lg px-1.5 py-2.5 text-[11px] sm:text-xs whitespace-nowrap" data-lang="en" onclick="changeLanguage('en')" type="button">EN</button>
+<button class="lang-btn min-w-0 bg-[#7EA094] text-white font-bold rounded-lg px-1.5 py-2.5 text-[11px] sm:text-xs whitespace-nowrap" data-lang="ja" onclick="changeLanguage('ja')" type="button">日本語</button>
+<button class="lang-btn min-w-0 bg-[#7EA094] text-white font-bold rounded-lg px-1.5 py-2.5 text-[11px] sm:text-xs whitespace-nowrap" data-lang="ko" onclick="changeLanguage('ko')" type="button">한국어</button>
 </div>
 </div>
 </div>
