@@ -101,19 +101,17 @@
 </div>
 </div>
 <!-- Mobile language bar -->
-<div class="md:hidden bg-[#5F8778] px-3 py-3 border-t border-white/10">
-<div class="w-full">
-<div class="flex items-center justify-center mb-2">
-<div class="inline-flex items-center gap-2 bg-[#3E6759] text-white rounded-full px-3 py-2 text-xs font-bold">
-<span>🌐</span><span>語言 Language</span>
+<div class="md:hidden bg-[#5F8778] px-2 py-3 border-t border-white/10">
+<div class="grid items-center gap-1.5 w-full"
+     style="grid-template-columns:minmax(0,1.45fr) repeat(4,minmax(0,.72fr));">
+<div class="min-w-0 flex items-center justify-center gap-1 bg-[#3E6759] text-white rounded-full px-1.5 py-2.5 font-bold whitespace-nowrap overflow-hidden">
+<span class="text-[11px]">🌐</span>
+<span class="text-[9px] min-[390px]:text-[10px]">語言 <span class="hidden min-[375px]:inline">Language</span></span>
 </div>
-</div>
-<div class="grid grid-cols-4 gap-2 w-full">
-<button class="lang-btn min-w-0 bg-gold text-forest font-bold rounded-lg px-1.5 py-2.5 text-[11px] sm:text-xs whitespace-nowrap" data-lang="zh" onclick="changeLanguage('zh')" type="button">繁中</button>
-<button class="lang-btn min-w-0 bg-[#7EA094] text-white font-bold rounded-lg px-1.5 py-2.5 text-[11px] sm:text-xs whitespace-nowrap" data-lang="en" onclick="changeLanguage('en')" type="button">EN</button>
-<button class="lang-btn min-w-0 bg-[#7EA094] text-white font-bold rounded-lg px-1.5 py-2.5 text-[11px] sm:text-xs whitespace-nowrap" data-lang="ja" onclick="changeLanguage('ja')" type="button">日本語</button>
-<button class="lang-btn min-w-0 bg-[#7EA094] text-white font-bold rounded-lg px-1.5 py-2.5 text-[11px] sm:text-xs whitespace-nowrap" data-lang="ko" onclick="changeLanguage('ko')" type="button">한국어</button>
-</div>
+<button class="lang-btn min-w-0 bg-gold text-forest font-bold rounded-lg px-1 py-2.5 text-[10px] whitespace-nowrap" data-lang="zh" onclick="changeLanguage('zh')" type="button">繁中</button>
+<button class="lang-btn min-w-0 bg-[#7EA094] text-white font-bold rounded-lg px-1 py-2.5 text-[10px] whitespace-nowrap" data-lang="en" onclick="changeLanguage('en')" type="button">EN</button>
+<button class="lang-btn min-w-0 bg-[#7EA094] text-white font-bold rounded-lg px-1 py-2.5 text-[10px] whitespace-nowrap" data-lang="ja" onclick="changeLanguage('ja')" type="button">日本語</button>
+<button class="lang-btn min-w-0 bg-[#7EA094] text-white font-bold rounded-lg px-1 py-2.5 text-[10px] whitespace-nowrap" data-lang="ko" onclick="changeLanguage('ko')" type="button">한국어</button>
 </div>
 </div>
 </div></header>
