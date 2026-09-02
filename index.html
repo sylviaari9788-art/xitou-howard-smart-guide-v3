@@ -79,6 +79,16 @@
     </style>
 </head>
 <body class="pb-20 md:pb-0">
+<audio id="jungleAmbience" loop preload="metadata" playsinline>
+  <source src="https://upload.wikimedia.org/wikipedia/commons/0/0a/20090610_0_ambience.ogg" type="audio/ogg">
+</audio>
+<button id="jungleSoundToggle"
+        type="button"
+        aria-label="開啟或關閉森林鳥叫背景音"
+        title="森林鳥叫背景音"
+        class="fixed z-[55] right-3 top-[92px] md:top-[88px] md:right-5 w-11 h-11 rounded-full bg-forest/90 text-white shadow-lg border border-white/20 backdrop-blur flex items-center justify-center text-lg hover:bg-forest-dark transition"
+        onclick="toggleJungleAmbience()">🔊</button>
+
 <img aria-hidden="true" id="character-cursor" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt=""/>
 <div class="fixed top-20 right-3 md:right-5 z-30 bg-white/90 backdrop-blur border border-gold/30 text-forest text-[10px] md:text-xs font-bold px-3 py-1.5 rounded-full shadow-sm">智慧導覽 2.0</div>
 <!-- 1. 桌面版頂端導覽列 -->
@@ -101,17 +111,17 @@
 </div>
 </div>
 <!-- Mobile language bar -->
-<div class="md:hidden bg-[#5F8778] px-4 py-3 border-t border-white/10">
-<div class="flex items-center justify-between gap-3 overflow-x-auto">
-<div class="inline-flex shrink-0 items-center gap-2 bg-[#3E6759] text-white rounded-full px-3 py-2 text-xs font-bold">
-<span>🌐</span><span>語言 Language</span>
+<div class="md:hidden bg-[#5F8778] px-2 py-3 border-t border-white/10">
+<div class="grid items-center gap-1.5 w-full"
+     style="grid-template-columns:minmax(0,1.45fr) repeat(4,minmax(0,.72fr));">
+<div class="min-w-0 flex items-center justify-center gap-1 bg-[#3E6759] text-white rounded-full px-1.5 py-2.5 font-bold whitespace-nowrap overflow-hidden">
+<span class="text-[11px]">🌐</span>
+<span class="text-[9px] min-[390px]:text-[10px]">語言 <span class="hidden min-[375px]:inline">Language</span></span>
 </div>
-<div class="flex items-center gap-2 shrink-0">
-<button class="lang-btn bg-gold text-forest font-bold rounded-lg px-3 py-2 text-xs" data-lang="zh" onclick="changeLanguage('zh')" type="button">繁中</button>
-<button class="lang-btn bg-[#7EA094] text-white font-bold rounded-lg px-3 py-2 text-xs" data-lang="en" onclick="changeLanguage('en')" type="button">EN</button>
-<button class="lang-btn bg-[#7EA094] text-white font-bold rounded-lg px-3 py-2 text-xs" data-lang="ja" onclick="changeLanguage('ja')" type="button">日本語</button>
-<button class="lang-btn bg-[#7EA094] text-white font-bold rounded-lg px-3 py-2 text-xs" data-lang="ko" onclick="changeLanguage('ko')" type="button">한국어</button>
-</div>
+<button class="lang-btn min-w-0 bg-gold text-forest font-bold rounded-lg px-1 py-2.5 text-[10px] whitespace-nowrap" data-lang="zh" onclick="changeLanguage('zh')" type="button">繁中</button>
+<button class="lang-btn min-w-0 bg-[#7EA094] text-white font-bold rounded-lg px-1 py-2.5 text-[10px] whitespace-nowrap" data-lang="en" onclick="changeLanguage('en')" type="button">EN</button>
+<button class="lang-btn min-w-0 bg-[#7EA094] text-white font-bold rounded-lg px-1 py-2.5 text-[10px] whitespace-nowrap" data-lang="ja" onclick="changeLanguage('ja')" type="button">日本語</button>
+<button class="lang-btn min-w-0 bg-[#7EA094] text-white font-bold rounded-lg px-1 py-2.5 text-[10px] whitespace-nowrap" data-lang="ko" onclick="changeLanguage('ko')" type="button">한국어</button>
 </div>
 </div>
 </div></header>
@@ -1482,5 +1492,66 @@
         document.documentElement.addEventListener('mouseenter', () => cursor.classList.add('is-visible'));
     })();
 </script>
+
+<script>
+(() => {
+    const audio = document.getElementById('jungleAmbience');
+    const btn = document.getElementById('jungleSoundToggle');
+    if (!audio || !btn) return;
+
+    audio.volume = 0.22;
+    let userMuted = false;
+    let started = false;
+
+    const updateIcon = () => {
+        const on = !audio.paused && !audio.muted;
+        btn.textContent = on ? '🔊' : '🔇';
+        btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+    };
+
+    const tryStart = async () => {
+        if (userMuted || started) return;
+        try {
+            await audio.play();
+            started = true;
+            updateIcon();
+        } catch (_) {}
+    };
+
+    window.toggleJungleAmbience = async function() {
+        if (audio.paused || audio.muted) {
+            userMuted = false;
+            audio.muted = false;
+            try {
+                await audio.play();
+                started = true;
+            } catch (_) {}
+        } else {
+            userMuted = true;
+            audio.pause();
+        }
+        updateIcon();
+    };
+
+    tryStart();
+
+    const unlock = () => {
+        tryStart();
+        window.removeEventListener('pointerdown', unlock, true);
+        window.removeEventListener('touchstart', unlock, true);
+        window.removeEventListener('keydown', unlock, true);
+    };
+
+    window.addEventListener('pointerdown', unlock, true);
+    window.addEventListener('touchstart', unlock, true);
+    window.addEventListener('keydown', unlock, true);
+
+    audio.addEventListener('play', updateIcon);
+    audio.addEventListener('pause', updateIcon);
+    audio.addEventListener('volumechange', updateIcon);
+    updateIcon();
+})();
+</script>
+
 </body>
 </html>
